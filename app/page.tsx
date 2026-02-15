@@ -72,7 +72,7 @@ export default function HomePage() {
       <section id="contact" className="cardSection">
         <h2>Contact</h2>
         <p>
-          메일: <a href={portfolio.links.email}>you@example.com</a>
+          메일: <a href={portfolio.links.email}>hyenje29@gmail.com</a>
         </p>
         <p>
           GitHub: <a href={portfolio.links.github}>{portfolio.links.github}</a>
