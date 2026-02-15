@@ -1,0 +1,18 @@
+---
+title: "첫 글"
+date: "2026-02-15"
+summary: "원페이지 포트폴리오와 MDX 블로그를 정적 배포한 기록"
+tags: ["nextjs", "mdx", "aws"]
+---
+
+포트폴리오와 블로그를 한 도메인에서 운영하기 위해 Next.js 정적 export를 적용했다.
+
+## 구성
+
+- `/` : 원페이지 포트폴리오
+- `/blog` : 글 목록
+- `/blog/[slug]` : 글 상세
+
+## 배포
+
+S3에 `out/`을 업로드하고 CloudFront + Route53으로 HTTPS 도메인을 연결한다.

@@ -1,66 +1,83 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+import Link from "next/link";
+import { portfolio } from "@/data/portfolio";
 
-export default function Home() {
+export default function HomePage() {
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className={styles.intro}>
-          <h1>To get started, edit the page.tsx file.</h1>
-          <p>
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
+    <main className="container">
+      <header className="hero">
+        <nav className="topNav">
+          <a href="#about">About</a>
+          <a href="#skills">Skills</a>
+          <a href="#projects">Projects</a>
+          <a href="#experience">Experience</a>
+          <a href="#contact">Contact</a>
+          <Link href="/blog">Blog</Link>
+        </nav>
+
+        <p className="eyebrow">{portfolio.name}</p>
+        <h1>{portfolio.headline}</h1>
+        <div className="ctaRow">
+          <a href={portfolio.links.github} target="_blank" rel="noreferrer">
+            GitHub
           </a>
-          <a
-            className={styles.secondary}
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+          <a href={portfolio.links.email}>Email</a>
+          <Link href={portfolio.links.blog}>Blog</Link>
         </div>
-      </main>
-    </div>
+      </header>
+
+      <section id="about" className="cardSection">
+        <h2>About</h2>
+        {portfolio.sections.about.split("\n").map((line) => (
+          <p key={line}>{line}</p>
+        ))}
+      </section>
+
+      <section id="skills" className="cardSection">
+        <h2>Skills</h2>
+        <ul className="chipList">
+          {portfolio.sections.skills.map((skill) => (
+            <li key={skill}>{skill}</li>
+          ))}
+        </ul>
+      </section>
+
+      <section id="projects" className="cardSection">
+        <h2>Projects</h2>
+        <div className="grid">
+          {portfolio.sections.projects.map((project) => (
+            <article key={project.title}>
+              <h3>{project.title}</h3>
+              <p>{project.desc}</p>
+              <a href={project.link} target="_blank" rel="noreferrer">
+                Link
+              </a>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section id="experience" className="cardSection">
+        <h2>Experience</h2>
+        <div className="list">
+          {portfolio.sections.experience.map((item) => (
+            <article key={item.title}>
+              <h3>{item.title}</h3>
+              <p className="period">{item.period}</p>
+              <p>{item.desc}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section id="contact" className="cardSection">
+        <h2>Contact</h2>
+        <p>
+          메일: <a href={portfolio.links.email}>you@example.com</a>
+        </p>
+        <p>
+          GitHub: <a href={portfolio.links.github}>{portfolio.links.github}</a>
+        </p>
+      </section>
+    </main>
   );
 }

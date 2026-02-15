@@ -1,36 +1,64 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# hyenje29.click
 
-## Getting Started
+원페이지 포트폴리오 + MDX 블로그를 Next.js 정적 export로 배포하는 프로젝트입니다.
 
-First, run the development server:
+## Routes
+
+- `/`: portfolio one-page
+- `/blog`: blog list
+- `/blog/[slug]`: blog detail
+
+## Local development
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Content
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- 포트폴리오 데이터: `data/portfolio.ts`
+- 블로그 글: `content/blog/*.mdx`
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+MDX 파일 예시:
 
-## Learn More
+```mdx
+---
+title: "글 제목"
+date: "2026-02-15"
+summary: "한 줄 요약"
+tags: ["tag1", "tag2"]
+---
 
-To learn more about Next.js, take a look at the following resources:
+본문...
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Static build
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+`next.config.ts`에 `output: "export"`가 설정되어 있고, 빌드 결과는 `out/`에 생성됩니다.
 
-## Deploy on Vercel
+```bash
+npm run build
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## AWS Deploy (S3 + CloudFront + Route53)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. ACM 인증서 발급 (CloudFront는 `us-east-1`에서 발급)
+2. S3 버킷 생성 후 `out/` 업로드
+3. CloudFront 배포 생성 + OAC 연결
+4. Route53 Alias 레코드로 도메인 연결
+
+수동 업로드:
+
+```bash
+aws s3 sync out s3://<your-bucket> --delete
+aws cloudfront create-invalidation --distribution-id <your-distribution-id> --paths "/*"
+```
+
+자동 배포는 `.github/workflows/deploy.yml`을 사용합니다.
+필요한 GitHub Secrets:
+
+- `AWS_ACCESS_KEY_ID`
+- `AWS_SECRET_ACCESS_KEY`
+- `AWS_S3_BUCKET`
+- `AWS_CLOUDFRONT_DISTRIBUTION_ID`
