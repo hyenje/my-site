@@ -1,9 +1,24 @@
 export const portfolio = {
   name: "Hyeonjae",
   headline: "Programmer · Competitive Programming",
+  photo: "/profile.jpg",
+  ratings: {
+    atcoder: {
+      handle: "hyenje29",
+      rating: 1102,
+      maxRating: 1148,
+      url: "https://atcoder.jp/users/hyenje29",
+    },
+    codeforces: {
+      handle: "hyenje29",
+      rating: 1563,
+      maxRating: 1585,
+      url: "https://codeforces.com/profile/hyenje29",
+    },
+  },
   links: {
     github: "https://github.com/hyenje",
-    email: "hyenje29@gmail.com",
+    email: "mailto:hyenje29@gmail.com",
     blog: "https://blog.naver.com/hyenje29",
   },
   sections: {
