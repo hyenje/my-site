@@ -1,8 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
 import { portfolio } from "@/data/portfolio";
+import { getCompetitiveRatings } from "@/lib/ratings";
 
-export default function HomePage() {
+export default async function HomePage() {
+  const ratings = await getCompetitiveRatings(portfolio.ratings);
+
   return (
     <main className="container">
       <header className="hero">
@@ -41,16 +44,16 @@ export default function HomePage() {
             />
             <div className="ratingPanel">
               <h3>Competitive Ratings</h3>
-              <a href={portfolio.ratings.atcoder.url} target="_blank" rel="noreferrer">
-                AtCoder @{portfolio.ratings.atcoder.handle}
+              <a href={ratings.atcoder.url} target="_blank" rel="noreferrer">
+                AtCoder @{ratings.atcoder.handle}
                 <span>
-                  {portfolio.ratings.atcoder.rating} (max {portfolio.ratings.atcoder.maxRating})
+                  {ratings.atcoder.rating} (max {ratings.atcoder.maxRating})
                 </span>
               </a>
-              <a href={portfolio.ratings.codeforces.url} target="_blank" rel="noreferrer">
-                Codeforces @{portfolio.ratings.codeforces.handle}
+              <a href={ratings.codeforces.url} target="_blank" rel="noreferrer">
+                Codeforces @{ratings.codeforces.handle}
                 <span>
-                  {portfolio.ratings.codeforces.rating} (max {portfolio.ratings.codeforces.maxRating})
+                  {ratings.codeforces.rating} (max {ratings.codeforces.maxRating})
                 </span>
               </a>
             </div>
