@@ -81,6 +81,15 @@ a {
   gap: 10px;
 }
 
+.ratingPanelInline {
+  margin-top: 18px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.ratingPanelInline h3 {
+  grid-column: 1 / -1;
+}
+
 .ratingPanel h3 {
   font-size: 14px;
   color: var(--subtle);

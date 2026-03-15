@@ -44,33 +44,6 @@ export default async function HomePage() {
               className="profileImage"
               priority
             />
-            <div className="ratingPanel">
-              <h3>Competitive Ratings</h3>
-              <a
-                href={ratings.atcoder.url}
-                target="_blank"
-                rel="noreferrer"
-                className={`ratingCard ${atcoderTone.className}`}
-              >
-                AtCoder @{ratings.atcoder.handle}
-                <span>
-                  {ratings.atcoder.rating} (max {ratings.atcoder.maxRating})
-                </span>
-                <small>{atcoderTone.label}</small>
-              </a>
-              <a
-                href={ratings.codeforces.url}
-                target="_blank"
-                rel="noreferrer"
-                className={`ratingCard ${codeforcesTone.className}`}
-              >
-                Codeforces @{ratings.codeforces.handle}
-                <span>
-                  {ratings.codeforces.rating} (max {ratings.codeforces.maxRating})
-                </span>
-                <small>{codeforcesTone.label}</small>
-              </a>
-            </div>
           </aside>
         </div>
       </header>
@@ -89,6 +62,33 @@ export default async function HomePage() {
             <li key={skill}>{skill}</li>
           ))}
         </ul>
+        <div className="ratingPanel ratingPanelInline">
+          <h3>Competitive Ratings</h3>
+          <a
+            href={ratings.atcoder.url}
+            target="_blank"
+            rel="noreferrer"
+            className={`ratingCard ${atcoderTone.className}`}
+          >
+            AtCoder @{ratings.atcoder.handle}
+            <span>
+              {ratings.atcoder.rating} (max {ratings.atcoder.maxRating})
+            </span>
+            <small>{atcoderTone.label}</small>
+          </a>
+          <a
+            href={ratings.codeforces.url}
+            target="_blank"
+            rel="noreferrer"
+            className={`ratingCard ${codeforcesTone.className}`}
+          >
+            Codeforces @{ratings.codeforces.handle}
+            <span>
+              {ratings.codeforces.rating} (max {ratings.codeforces.maxRating})
+            </span>
+            <small>{codeforcesTone.label}</small>
+          </a>
+        </div>
       </section>
 
       <section id="projects" className="cardSection">
