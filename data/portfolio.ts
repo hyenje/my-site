@@ -1,6 +1,6 @@
 export const portfolio = {
   name: "Hyeonjae",
-  headline: "Programmer · Competitive Programming",
+  headline: "Hyeonjae's Site",
   photo: "/profile.jpg",
   ratings: {
     atcoder: {

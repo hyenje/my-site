@@ -8,8 +8,8 @@ const notoSansKr = Noto_Sans_KR({
 });
 
 export const metadata: Metadata = {
-  title: "Hyeonjae Portfolio",
-  description: "One-page portfolio and MDX blog",
+  title: "Hyeonjae's Site",
+  description: "Portfolio, competitive programming, and writing by Hyeonjae",
 };
 
 export default function RootLayout({
