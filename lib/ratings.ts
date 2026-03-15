@@ -10,6 +10,11 @@ type CompetitiveRatings = {
   codeforces: BaseRating;
 };
 
+export type RatingTone = {
+  label: string;
+  className: string;
+};
+
 type AtCoderHistoryItem = {
   NewRating: number;
 };
@@ -93,4 +98,28 @@ export async function getCompetitiveRatings(
     atcoder,
     codeforces,
   };
+}
+
+export function getAtCoderTone(rating: number): RatingTone {
+  if (rating >= 2800) return { label: "Red", className: "toneAtcoderRed" };
+  if (rating >= 2400) return { label: "Orange", className: "toneAtcoderOrange" };
+  if (rating >= 2000) return { label: "Yellow", className: "toneAtcoderYellow" };
+  if (rating >= 1600) return { label: "Blue", className: "toneAtcoderBlue" };
+  if (rating >= 1200) return { label: "Cyan", className: "toneAtcoderCyan" };
+  if (rating >= 800) return { label: "Green", className: "toneAtcoderGreen" };
+  if (rating >= 400) return { label: "Brown", className: "toneAtcoderBrown" };
+  return { label: "Gray", className: "toneAtcoderGray" };
+}
+
+export function getCodeforcesTone(rating: number): RatingTone {
+  if (rating >= 3000) return { label: "Legendary Grandmaster", className: "toneCfLegendary" };
+  if (rating >= 2600) return { label: "International Grandmaster", className: "toneCfRed" };
+  if (rating >= 2400) return { label: "Grandmaster", className: "toneCfRed" };
+  if (rating >= 2300) return { label: "International Master", className: "toneCfOrange" };
+  if (rating >= 2100) return { label: "Master", className: "toneCfOrange" };
+  if (rating >= 1900) return { label: "Candidate Master", className: "toneCfPurple" };
+  if (rating >= 1600) return { label: "Expert", className: "toneCfBlue" };
+  if (rating >= 1400) return { label: "Specialist", className: "toneCfCyan" };
+  if (rating >= 1200) return { label: "Pupil", className: "toneCfGreen" };
+  return { label: "Newbie", className: "toneCfGray" };
 }

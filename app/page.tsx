@@ -1,10 +1,12 @@
 import Image from "next/image";
 import Link from "next/link";
 import { portfolio } from "@/data/portfolio";
-import { getCompetitiveRatings } from "@/lib/ratings";
+import { getAtCoderTone, getCodeforcesTone, getCompetitiveRatings } from "@/lib/ratings";
 
 export default async function HomePage() {
   const ratings = await getCompetitiveRatings(portfolio.ratings);
+  const atcoderTone = getAtCoderTone(ratings.atcoder.rating);
+  const codeforcesTone = getCodeforcesTone(ratings.codeforces.rating);
 
   return (
     <main className="container">
@@ -44,17 +46,29 @@ export default async function HomePage() {
             />
             <div className="ratingPanel">
               <h3>Competitive Ratings</h3>
-              <a href={ratings.atcoder.url} target="_blank" rel="noreferrer">
+              <a
+                href={ratings.atcoder.url}
+                target="_blank"
+                rel="noreferrer"
+                className={`ratingCard ${atcoderTone.className}`}
+              >
                 AtCoder @{ratings.atcoder.handle}
                 <span>
                   {ratings.atcoder.rating} (max {ratings.atcoder.maxRating})
                 </span>
+                <small>{atcoderTone.label}</small>
               </a>
-              <a href={ratings.codeforces.url} target="_blank" rel="noreferrer">
+              <a
+                href={ratings.codeforces.url}
+                target="_blank"
+                rel="noreferrer"
+                className={`ratingCard ${codeforcesTone.className}`}
+              >
                 Codeforces @{ratings.codeforces.handle}
                 <span>
                   {ratings.codeforces.rating} (max {ratings.codeforces.maxRating})
                 </span>
+                <small>{codeforcesTone.label}</small>
               </a>
             </div>
           </aside>
