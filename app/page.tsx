@@ -23,13 +23,13 @@ export default async function HomePage() {
 
         <div className="heroBody">
           <div className="heroMain">
-            <p className="heroKicker">Portfolio · Competitive Programming · Writing</p>
+            <p className="heroKicker">Competitive Programming · Writing</p>
             <h1 className="heroTitle">{portfolio.headline}</h1>
             <p className="heroIntro">{intro[0]}</p>
             <div className="heroNotes">
               <span>Ajou Univ · A.N.S.I</span>
-              <span>Static-first portfolio</span>
-              <span>MDX blog on AWS</span>
+              <span>AtCoder · Codeforces</span>
+              <span>MDX Blog</span>
             </div>
             <div className="ctaRow heroActions">
               <a href={portfolio.links.github} target="_blank" rel="noreferrer">
