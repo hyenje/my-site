@@ -7,9 +7,10 @@ export default async function HomePage() {
   const ratings = await getCompetitiveRatings(portfolio.ratings);
   const atcoderTone = getAtCoderTone(ratings.atcoder.rating);
   const codeforcesTone = getCodeforcesTone(ratings.codeforces.rating);
+  const intro = portfolio.sections.about.split("\n");
 
   return (
-    <main className="container">
+    <main className="container homePage">
       <header className="hero">
         <nav className="topNav">
           <a href="#about">About</a>
@@ -22,9 +23,15 @@ export default async function HomePage() {
 
         <div className="heroBody">
           <div className="heroMain">
-            <p className="eyebrow">{portfolio.name}</p>
-            <h1>{portfolio.headline}</h1>
-            <div className="ctaRow">
+            <p className="heroKicker">Portfolio · Competitive Programming · Writing</p>
+            <h1 className="heroTitle">{portfolio.headline}</h1>
+            <p className="heroIntro">{intro[0]}</p>
+            <div className="heroNotes">
+              <span>Ajou Univ · A.N.S.I</span>
+              <span>Static-first portfolio</span>
+              <span>MDX blog on AWS</span>
+            </div>
+            <div className="ctaRow heroActions">
               <a href={portfolio.links.github} target="_blank" rel="noreferrer">
                 GitHub
               </a>
@@ -44,91 +51,114 @@ export default async function HomePage() {
               className="profileImage"
               priority
             />
+            <div className="portraitCaption">
+              <span>{portfolio.name}</span>
+              <small>building calm, reliable tools and solving hard problems</small>
+            </div>
           </aside>
         </div>
       </header>
 
-      <section id="about" className="cardSection">
-        <h2>About</h2>
-        {portfolio.sections.about.split("\n").map((line) => (
-          <p key={line}>{line}</p>
-        ))}
+      <section className="sectionGrid">
+        <section id="about" className="cardSection featureCard">
+          <p className="sectionLabel">About</p>
+          <h2>Quiet structure, steady shipping.</h2>
+          {portfolio.sections.about.split("\n").map((line) => (
+            <p key={line}>{line}</p>
+          ))}
+        </section>
+
+        <section id="experience" className="cardSection featureCard">
+          <p className="sectionLabel">Experience</p>
+          <h2>{portfolio.sections.experience[0].title}</h2>
+          <p className="period">{portfolio.sections.experience[0].period}</p>
+          <div className="experienceLines">
+            {Array.isArray(portfolio.sections.experience[0].desc)
+              ? portfolio.sections.experience[0].desc.map((line) => <p key={line}>{line}</p>)
+              : <p>{portfolio.sections.experience[0].desc}</p>}
+          </div>
+        </section>
       </section>
 
       <section id="skills" className="cardSection">
-        <h2>Skills</h2>
-        <ul className="chipList">
-          {portfolio.sections.skills.map((skill) => (
-            <li key={skill}>{skill}</li>
-          ))}
-        </ul>
-        <div className="ratingPanel ratingPanelInline">
-          <h3>Competitive Ratings</h3>
-          <a
-            href={ratings.atcoder.url}
-            target="_blank"
-            rel="noreferrer"
-            className={`ratingCard ${atcoderTone.className}`}
-          >
-            AtCoder @{ratings.atcoder.handle}
-            <span>
-              {ratings.atcoder.rating} (max {ratings.atcoder.maxRating})
-            </span>
-            <small>{atcoderTone.label}</small>
-          </a>
-          <a
-            href={ratings.codeforces.url}
-            target="_blank"
-            rel="noreferrer"
-            className={`ratingCard ${codeforcesTone.className}`}
-          >
-            Codeforces @{ratings.codeforces.handle}
-            <span>
-              {ratings.codeforces.rating} (max {ratings.codeforces.maxRating})
-            </span>
-            <small>{codeforcesTone.label}</small>
-          </a>
+        <div className="sectionIntro">
+          <p className="sectionLabel">Skills</p>
+          <h2>Core stack and competitive profile</h2>
+        </div>
+        <div className="skillsLayout">
+          <ul className="chipList skillChips">
+            {portfolio.sections.skills.map((skill) => (
+              <li key={skill}>{skill}</li>
+            ))}
+          </ul>
+          <div className="ratingPanel ratingPanelInline">
+            <h3>Competitive Ratings</h3>
+            <a
+              href={ratings.atcoder.url}
+              target="_blank"
+              rel="noreferrer"
+              className={`ratingCard ${atcoderTone.className}`}
+            >
+              AtCoder @{ratings.atcoder.handle}
+              <span>
+                {ratings.atcoder.rating} (max {ratings.atcoder.maxRating})
+              </span>
+              <small>{atcoderTone.label}</small>
+            </a>
+            <a
+              href={ratings.codeforces.url}
+              target="_blank"
+              rel="noreferrer"
+              className={`ratingCard ${codeforcesTone.className}`}
+            >
+              Codeforces @{ratings.codeforces.handle}
+              <span>
+                {ratings.codeforces.rating} (max {ratings.codeforces.maxRating})
+              </span>
+              <small>{codeforcesTone.label}</small>
+            </a>
+          </div>
         </div>
       </section>
 
       <section id="projects" className="cardSection">
-        <h2>Projects</h2>
-        <div className="grid">
-          {portfolio.sections.projects.map((project) => (
-            <article key={project.title}>
+        <div className="sectionIntro">
+          <p className="sectionLabel">Projects</p>
+          <h2>Selected work</h2>
+        </div>
+        <div className="projectGrid">
+          {portfolio.sections.projects.map((project, index) => (
+            <article key={project.title} className="projectCard">
+              <p className="projectIndex">{String(index + 1).padStart(2, "0")}</p>
               <h3>{project.title}</h3>
               <p>{project.desc}</p>
               <a href={project.link} target="_blank" rel="noreferrer">
-                Link
+                View project
               </a>
             </article>
           ))}
         </div>
       </section>
 
-      <section id="experience" className="cardSection">
-        <h2>Experience</h2>
-        <div className="list">
-          {portfolio.sections.experience.map((item) => (
-            <article key={item.title}>
-              <h3>{item.title}</h3>
-              <p className="period">{item.period}</p>
-              {Array.isArray(item.desc)
-                ? item.desc.map((line) => <p key={line}>{line}</p>)
-                : <p>{item.desc}</p>}
-            </article>
-          ))}
-        </div>
-      </section>
-
       <section id="contact" className="cardSection">
-        <h2>Contact</h2>
-        <p>
-          메일: <a href={portfolio.links.email}>hyenje29@gmail.com</a>
-        </p>
-        <p>
-          GitHub: <a href={portfolio.links.github}>{portfolio.links.github}</a>
-        </p>
+        <div className="sectionIntro">
+          <p className="sectionLabel">Contact</p>
+          <h2>Open to thoughtful projects and conversations.</h2>
+        </div>
+        <div className="contactGrid">
+          <a href={portfolio.links.email} className="contactItem">
+            <span>Email</span>
+            <strong>hyenje29@gmail.com</strong>
+          </a>
+          <a href={portfolio.links.github} className="contactItem" target="_blank" rel="noreferrer">
+            <span>GitHub</span>
+            <strong>github.com/hyenje</strong>
+          </a>
+          <a href={portfolio.links.blog} className="contactItem" target="_blank" rel="noreferrer">
+            <span>Blog</span>
+            <strong>blog.naver.com/hyenje29</strong>
+          </a>
+        </div>
       </section>
     </main>
   );
