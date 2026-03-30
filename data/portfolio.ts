@@ -5,14 +5,14 @@ export const portfolio = {
   ratings: {
     atcoder: {
       handle: "hyenje29",
-      rating: 1128,
-      maxRating: 1148,
+      rating: 1154,
+      maxRating: 1154,
       url: "https://atcoder.jp/users/hyenje29",
     },
     codeforces: {
       handle: "hyenje29",
-      rating: 1563,
-      maxRating: 1585,
+      rating: 1603,
+      maxRating: 1603,
       url: "https://codeforces.com/profile/hyenje29",
     },
   },
