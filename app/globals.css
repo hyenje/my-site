@@ -564,8 +564,16 @@ h1 {
     grid-template-columns: 1fr;
   }
 
+  .heroAside {
+    max-width: 520px;
+    width: 100%;
+    justify-self: center;
+  }
+
   .profileImage {
-    height: 420px;
+    height: auto;
+    aspect-ratio: 4 / 5;
+    object-position: center 18%;
   }
 }
 
@@ -633,15 +641,7 @@ h1 {
     font-size: 16px;
   }
 
-  .profileImage {
-    height: auto;
-    aspect-ratio: 4 / 5;
-    object-position: center 18%;
-  }
-
   .heroAside {
     max-width: 380px;
-    width: 100%;
-    justify-self: center;
   }
 }
