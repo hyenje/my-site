@@ -634,6 +634,14 @@ h1 {
   }
 
   .profileImage {
-    height: 280px;
+    height: auto;
+    aspect-ratio: 4 / 5;
+    object-position: center 18%;
+  }
+
+  .heroAside {
+    max-width: 380px;
+    width: 100%;
+    justify-self: center;
   }
 }
