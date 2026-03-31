@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import PretextHeroTitle from "@/components/PretextHeroTitle";
 import { portfolio } from "@/data/portfolio";
 import { getAtCoderTone, getCodeforcesTone, getCompetitiveRatings } from "@/lib/ratings";
 
@@ -24,7 +25,7 @@ export default async function HomePage() {
         <div className="heroBody">
           <div className="heroMain">
             <p className="heroKicker">Competitive Programming · Writing</p>
-            <h1 className="heroTitle">{portfolio.headline}</h1>
+            <PretextHeroTitle text={portfolio.headline} className="heroTitle" />
             <p className="heroIntro">{intro[0]}</p>
             <div className="heroNotes">
               <span>Ajou Univ · A.N.S.I</span>
