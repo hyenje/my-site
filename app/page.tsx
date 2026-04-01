@@ -27,18 +27,18 @@ export default async function HomePage() {
             <h1 className="heroTitle">{portfolio.headline}</h1>
             <p className="heroIntro">{intro[0]}</p>
             <div className="heroNotes">
-              <span>Ajou Univ · A.N.S.I</span>
-              <span>AtCoder · Codeforces</span>
-              <span>MDX Blog</span>
+              {portfolio.heroNotes.map((note) => (
+                <span key={note}>{note}</span>
+              ))}
             </div>
             <div className="ctaRow heroActions">
               <a href={portfolio.links.github} target="_blank" rel="noreferrer">
                 GitHub
               </a>
               <a href={portfolio.links.email}>Email</a>
-              <a href={portfolio.links.blog} target="_blank" rel="noreferrer">
+              <Link href={portfolio.links.blog}>
                 Blog
-              </a>
+              </Link>
             </div>
           </div>
 
@@ -53,7 +53,7 @@ export default async function HomePage() {
             />
             <div className="portraitCaption">
               <span>{portfolio.name}</span>
-              <small>building calm, reliable tools and solving hard problems</small>
+              <small>{portfolio.tagline}</small>
             </div>
           </aside>
         </div>
@@ -70,13 +70,17 @@ export default async function HomePage() {
 
         <section id="experience" className="cardSection featureCard">
           <p className="sectionLabel">Experience</p>
-          <h2>{portfolio.sections.experience[0].title}</h2>
-          <p className="period">{portfolio.sections.experience[0].period}</p>
-          <div className="experienceLines">
-            {Array.isArray(portfolio.sections.experience[0].desc)
-              ? portfolio.sections.experience[0].desc.map((line) => <p key={line}>{line}</p>)
-              : <p>{portfolio.sections.experience[0].desc}</p>}
-          </div>
+          {portfolio.sections.experience.map((exp) => (
+            <div key={exp.title} className="experienceItem">
+              <h2>{exp.title}</h2>
+              <p className="period">{exp.period}</p>
+              <div className="experienceLines">
+                {Array.isArray(exp.desc)
+                  ? exp.desc.map((line) => <p key={line}>{line}</p>)
+                  : <p>{exp.desc}</p>}
+              </div>
+            </div>
+          ))}
         </section>
       </section>
 
@@ -154,10 +158,10 @@ export default async function HomePage() {
             <span>GitHub</span>
             <strong>github.com/hyenje</strong>
           </a>
-          <a href={portfolio.links.blog} className="contactItem" target="_blank" rel="noreferrer">
+          <Link href={portfolio.links.blog} className="contactItem">
             <span>Blog</span>
-            <strong>blog.naver.com/hyenje29</strong>
-          </a>
+            <strong>hyenje29.click/blog</strong>
+          </Link>
         </div>
       </section>
     </main>

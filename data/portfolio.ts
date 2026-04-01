@@ -1,6 +1,8 @@
 export const portfolio = {
   name: "Hyeonjae",
-  headline: "Hyeonjae's Site",
+  headline: "Competitive Programmer & Developer",
+  tagline: "building calm, reliable tools and solving hard problems",
+  heroNotes: ["Ajou Univ · A.N.S.I", "AtCoder · Codeforces", "MDX Blog"],
   photo: "/profile.jpg",
   ratings: {
     atcoder: {
@@ -19,12 +21,12 @@ export const portfolio = {
   links: {
     github: "https://github.com/hyenje",
     email: "mailto:hyenje29@gmail.com",
-    blog: "https://blog.naver.com/hyenje29",
+    blog: "/blog",
   },
   sections: {
     about:
       "문제를 빠르게 분석하고, 안정적으로 배포 가능한 구조를 만드는 개발자입니다.\n알고리즘 기반 문제 해결과 웹 개발을 함께 다루며, 유지보수 가능한 코드와 자동화를 중요하게 생각합니다.",
-    skills: ["C++", "AWS", "GitHub Actions"],
+    skills: ["C++", "AWS S3", "CloudFront", "Route53", "ACM", "GitHub Actions"],
     projects: [
       {
         title: "Portfolio + MDX Blog",
