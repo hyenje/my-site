@@ -1,0 +1,87 @@
+---
+title: "포트폴리오 개선 기록 — 데이터 분리, 애니메이션, 레이팅 그래프"
+date: "2026-04-01"
+summary: "하드코딩 제거, 스크롤 페이드인, AtCoder/Codeforces 성장 그래프, 프로젝트 태그까지 한 번에 정리한 기록."
+tags: ["portfolio", "nextjs", "css", "atcoder", "codeforces"]
+---
+
+포트폴리오를 처음 만들 때는 일단 돌아가게 하는 데 집중했다. 그 결과 `page.tsx` 곳곳에 텍스트가 직접 박혀 있었다. 이번에 몇 가지를 한꺼번에 손봤다.
+
+## 하드코딩 제거 — 코드와 데이터 분리
+
+`page.tsx`에 이런 코드가 있었다.
+
+```tsx
+<span>Ajou Univ · A.N.S.I</span>
+<span>AtCoder · Codeforces</span>
+<span>MDX Blog</span>
+<small>building calm, reliable tools and solving hard problems</small>
+```
+
+화면에 보이는 문구인데 컴포넌트 안에 박혀 있으니 나중에 바꾸려면 JSX를 뒤져야 했다. `data/portfolio.ts`에 `heroNotes`와 `tagline` 필드를 추가하고 거기서 읽어오도록 바꿨다.
+
+experience 섹션도 비슷한 문제가 있었다. `experience[0]`만 직접 참조하고 있어서 항목이 늘어도 화면에 반영이 안 됐다. 배열 전체를 `.map()`으로 처리하도록 수정했다.
+
+스킬 목록도 `C++`, `AWS`, `GitHub Actions` 세 개뿐이었는데, 실제로 구성한 인프라에 맞게 `AWS S3`, `CloudFront`, `Route53`, `ACM`으로 구체화했다.
+
+## 스크롤 페이드인
+
+섹션이 화면에 들어올 때 아무런 동작이 없으니 밋밋한 느낌이 있었다. 의존성 추가 없이 구현하기 위해 `IntersectionObserver`를 사용했다.
+
+`components/FadeObserver.tsx`를 클라이언트 컴포넌트로 만들어 `layout.tsx`에 배치했다. 이 컴포넌트는 DOM을 건드리지 않고 `useEffect`에서 `[data-fade]` 속성을 가진 요소들을 관찰한다. 요소가 뷰포트에 들어오면 `is-visible` 클래스를 추가하고 관찰을 중단한다.
+
+```tsx
+const io = new IntersectionObserver((entries) => {
+  entries.forEach((e) => {
+    if (e.isIntersecting) {
+      e.target.classList.add("is-visible");
+      io.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.07, rootMargin: "0px 0px -40px 0px" });
+```
+
+CSS는 단순하다.
+
+```css
+[data-fade] {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 0.55s ease, transform 0.55s ease;
+}
+[data-fade].is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+```
+
+그리드 안의 자식 요소에는 `nth-child`로 딜레이를 조금씩 줘서 순차적으로 나타나는 효과를 냈다.
+
+## AtCoder / Codeforces 성장 그래프
+
+레이팅 카드에 숫자만 있으니 성장 흐름이 안 보였다. 차트 라이브러리를 쓰지 않고 SVG 경로를 직접 계산해서 넣기로 했다.
+
+`lib/ratings.ts`에서 기존에는 현재 레이팅만 조회했는데, 이번에 히스토리까지 함께 가져오도록 확장했다.
+
+- AtCoder: `users/{handle}/history/json` → `NewRating` 배열 추출
+- Codeforces: `user.rating?handle={handle}` → `newRating` 배열 추출
+
+`lib/chart.ts`에서 레이팅 배열을 받아 SVG cubic bezier 경로 문자열을 만든다. 최솟값과 최댓값으로 정규화하고, 각 포인트를 좌표로 변환한 뒤 부드러운 곡선으로 이어준다. 마지막 포인트에는 점을 찍어 현재 위치를 표시한다.
+
+```ts
+let line = `M${pts[0].x},${pts[0].y}`;
+for (let i = 1; i < pts.length; i++) {
+  const cpx = (pts[i-1].x + pts[i].x) / 2;
+  line += ` C${cpx},${pts[i-1].y} ${cpx},${pts[i].y} ${pts[i].x},${pts[i].y}`;
+}
+```
+
+정적 사이트 구조를 유지하면서 API 호출은 빌드 시점에만 일어난다. GitHub Actions가 매일 빌드를 실행하므로 레이팅은 자동으로 갱신된다.
+
+## 프로젝트 카드 기술 태그
+
+프로젝트 카드에 설명만 있으니 어떤 기술을 썼는지 한눈에 안 들어왔다. `portfolio.ts`의 `projects` 배열에 `tags` 필드를 추가하고 카드 하단에 렌더링했다. 색상은 기존 `accent-soft`(연한 초록)를 재활용해서 별도 변수 추가 없이 마무리했다.
+
+## 정리
+
+작은 변경들이지만 체감 차이가 꽤 있다. 특히 데이터를 `portfolio.ts` 한 곳에서 관리하게 되면서 앞으로 내용을 바꿀 때 JSX를 뒤질 필요가 없어졌다.
