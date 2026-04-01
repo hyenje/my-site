@@ -5,9 +5,18 @@ type BaseRating = {
   url: string;
 };
 
+export type RatingWithHistory = BaseRating & {
+  history: number[];
+};
+
 type CompetitiveRatings = {
   atcoder: BaseRating;
   codeforces: BaseRating;
+};
+
+export type CompetitiveRatingsWithHistory = {
+  atcoder: RatingWithHistory;
+  codeforces: RatingWithHistory;
 };
 
 export type RatingTone = {
@@ -28,35 +37,41 @@ type CodeforcesUserInfoResponse = {
   }>;
 };
 
-async function fetchCodeforcesRating(fallback: BaseRating): Promise<BaseRating> {
+type CodeforcesRatingChange = {
+  ratingUpdateTimeSeconds: number;
+  newRating: number;
+};
+
+type CodeforcesRatingResponse = {
+  status: string;
+  result?: CodeforcesRatingChange[];
+};
+
+async function fetchCodeforcesRating(fallback: BaseRating): Promise<RatingWithHistory> {
   try {
-    const response = await fetch(
-      `https://codeforces.com/api/user.info?handles=${fallback.handle}`,
-      { cache: "no-store" },
-    );
+    const [infoRes, ratingRes] = await Promise.all([
+      fetch(`https://codeforces.com/api/user.info?handles=${fallback.handle}`, { cache: "no-store" }),
+      fetch(`https://codeforces.com/api/user.rating?handle=${fallback.handle}`, { cache: "no-store" }),
+    ]);
 
-    if (!response.ok) {
-      return fallback;
-    }
+    const info = infoRes.ok ? ((await infoRes.json()) as CodeforcesUserInfoResponse) : null;
+    const ratingData = ratingRes.ok ? ((await ratingRes.json()) as CodeforcesRatingResponse) : null;
 
-    const data = (await response.json()) as CodeforcesUserInfoResponse;
-    const user = data.result?.[0];
-
-    if (!user) {
-      return fallback;
-    }
+    const user = info?.result?.[0];
+    const history = ratingData?.result?.map((r) => r.newRating) ?? [];
 
     return {
       ...fallback,
-      rating: user.rating ?? fallback.rating,
-      maxRating: user.maxRating ?? fallback.maxRating,
+      rating: user?.rating ?? fallback.rating,
+      maxRating: user?.maxRating ?? fallback.maxRating,
+      history,
     };
   } catch {
-    return fallback;
+    return { ...fallback, history: [] };
   }
 }
 
-async function fetchAtCoderRating(fallback: BaseRating): Promise<BaseRating> {
+async function fetchAtCoderRating(fallback: BaseRating): Promise<RatingWithHistory> {
   try {
     const response = await fetch(
       `https://atcoder.jp/users/${fallback.handle}/history/json`,
@@ -64,40 +79,39 @@ async function fetchAtCoderRating(fallback: BaseRating): Promise<BaseRating> {
     );
 
     if (!response.ok) {
-      return fallback;
+      return { ...fallback, history: [] };
     }
 
-    const history = (await response.json()) as AtCoderHistoryItem[];
+    const historyItems = (await response.json()) as AtCoderHistoryItem[];
 
-    if (!history.length) {
-      return fallback;
+    if (!historyItems.length) {
+      return { ...fallback, history: [] };
     }
 
-    const latest = history.at(-1)?.NewRating ?? fallback.rating;
-    const maxRating = Math.max(...history.map((entry) => entry.NewRating), fallback.maxRating);
+    const history = historyItems.map((h) => h.NewRating);
+    const latest = history.at(-1) ?? fallback.rating;
+    const maxRating = Math.max(...history, fallback.maxRating);
 
     return {
       ...fallback,
       rating: latest,
       maxRating,
+      history,
     };
   } catch {
-    return fallback;
+    return { ...fallback, history: [] };
   }
 }
 
 export async function getCompetitiveRatings(
   fallbackRatings: CompetitiveRatings,
-): Promise<CompetitiveRatings> {
+): Promise<CompetitiveRatingsWithHistory> {
   const [atcoder, codeforces] = await Promise.all([
     fetchAtCoderRating(fallbackRatings.atcoder),
     fetchCodeforcesRating(fallbackRatings.codeforces),
   ]);
 
-  return {
-    atcoder,
-    codeforces,
-  };
+  return { atcoder, codeforces };
 }
 
 export function getAtCoderTone(rating: number): RatingTone {

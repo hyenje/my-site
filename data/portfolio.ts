@@ -32,11 +32,13 @@ export const portfolio = {
         title: "Portfolio + MDX Blog",
         desc: "정적 배포 가능한 개인 사이트와 블로그 구축",
         link: "/blog",
+        tags: ["Next.js", "MDX", "AWS S3", "CloudFront", "GitHub Actions"],
       },
       {
         title: "Competitive Programming Archive",
         desc: "문제 풀이 기록과 태그 기반 정리",
         link: "https://github.com/hyenje/Algorithm-Study",
+        tags: ["C++", "Algorithm"],
       },
     ],
     experience: [

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Noto_Sans_KR, Space_Grotesk } from "next/font/google";
 import "./globals.css";
+import FadeObserver from "@/components/FadeObserver";
 
 const notoSansKr = Noto_Sans_KR({
   subsets: ["latin"],
@@ -24,7 +25,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
-      <body className={`${notoSansKr.variable} ${spaceGrotesk.variable}`}>{children}</body>
+      <body className={`${notoSansKr.variable} ${spaceGrotesk.variable}`}>
+        <FadeObserver />
+        {children}
+      </body>
     </html>
   );
 }

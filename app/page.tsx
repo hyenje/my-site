@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { portfolio } from "@/data/portfolio";
 import { getAtCoderTone, getCodeforcesTone, getCompetitiveRatings } from "@/lib/ratings";
+import { buildSvgPaths } from "@/lib/chart";
 
 export default async function HomePage() {
   const ratings = await getCompetitiveRatings(portfolio.ratings);
@@ -9,9 +10,12 @@ export default async function HomePage() {
   const codeforcesTone = getCodeforcesTone(ratings.codeforces.rating);
   const intro = portfolio.sections.about.split("\n");
 
+  const atcoderChart = buildSvgPaths(ratings.atcoder.history);
+  const codeforcesChart = buildSvgPaths(ratings.codeforces.history);
+
   return (
     <main className="container homePage">
-      <header className="hero">
+      <header className="hero" data-fade>
         <nav className="topNav">
           <a href="#about">About</a>
           <a href="#skills">Skills</a>
@@ -60,7 +64,7 @@ export default async function HomePage() {
       </header>
 
       <section className="sectionGrid">
-        <section id="about" className="cardSection featureCard">
+        <section id="about" className="cardSection featureCard" data-fade>
           <p className="sectionLabel">About</p>
           <h2>Quiet structure, steady shipping.</h2>
           {portfolio.sections.about.split("\n").map((line) => (
@@ -68,7 +72,7 @@ export default async function HomePage() {
           ))}
         </section>
 
-        <section id="experience" className="cardSection featureCard">
+        <section id="experience" className="cardSection featureCard" data-fade>
           <p className="sectionLabel">Experience</p>
           {portfolio.sections.experience.map((exp) => (
             <div key={exp.title} className="experienceItem">
@@ -84,7 +88,7 @@ export default async function HomePage() {
         </section>
       </section>
 
-      <section id="skills" className="cardSection">
+      <section id="skills" className="cardSection" data-fade>
         <div className="sectionIntro">
           <p className="sectionLabel">Skills</p>
           <h2>Core stack and competitive profile</h2>
@@ -103,11 +107,33 @@ export default async function HomePage() {
               rel="noreferrer"
               className={`ratingCard ${atcoderTone.className}`}
             >
-              AtCoder @{ratings.atcoder.handle}
-              <span>
-                {ratings.atcoder.rating} (max {ratings.atcoder.maxRating})
-              </span>
-              <small>{atcoderTone.label}</small>
+              <div className="ratingCardTop">
+                <div>
+                  <span className="ratingCardHandle">AtCoder @{ratings.atcoder.handle}</span>
+                  <span className="ratingCardScore">
+                    {ratings.atcoder.rating} <small>max {ratings.atcoder.maxRating}</small>
+                  </span>
+                  <span className="ratingCardLabel">{atcoderTone.label}</span>
+                </div>
+              </div>
+              {atcoderChart.linePath && (
+                <svg
+                  className="ratingChart"
+                  viewBox="0 0 360 80"
+                  preserveAspectRatio="none"
+                  aria-hidden="true"
+                >
+                  <defs>
+                    <linearGradient id="grad-atcoder" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopOpacity="0.25" stopColor="currentColor" />
+                      <stop offset="100%" stopOpacity="0" stopColor="currentColor" />
+                    </linearGradient>
+                  </defs>
+                  <path d={atcoderChart.fillPath} fill="url(#grad-atcoder)" />
+                  <path d={atcoderChart.linePath} fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+                  <circle cx={atcoderChart.lastX} cy={atcoderChart.lastY} r="4" fill="currentColor" />
+                </svg>
+              )}
             </a>
             <a
               href={ratings.codeforces.url}
@@ -115,17 +141,39 @@ export default async function HomePage() {
               rel="noreferrer"
               className={`ratingCard ${codeforcesTone.className}`}
             >
-              Codeforces @{ratings.codeforces.handle}
-              <span>
-                {ratings.codeforces.rating} (max {ratings.codeforces.maxRating})
-              </span>
-              <small>{codeforcesTone.label}</small>
+              <div className="ratingCardTop">
+                <div>
+                  <span className="ratingCardHandle">Codeforces @{ratings.codeforces.handle}</span>
+                  <span className="ratingCardScore">
+                    {ratings.codeforces.rating} <small>max {ratings.codeforces.maxRating}</small>
+                  </span>
+                  <span className="ratingCardLabel">{codeforcesTone.label}</span>
+                </div>
+              </div>
+              {codeforcesChart.linePath && (
+                <svg
+                  className="ratingChart"
+                  viewBox="0 0 360 80"
+                  preserveAspectRatio="none"
+                  aria-hidden="true"
+                >
+                  <defs>
+                    <linearGradient id="grad-codeforces" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopOpacity="0.25" stopColor="currentColor" />
+                      <stop offset="100%" stopOpacity="0" stopColor="currentColor" />
+                    </linearGradient>
+                  </defs>
+                  <path d={codeforcesChart.fillPath} fill="url(#grad-codeforces)" />
+                  <path d={codeforcesChart.linePath} fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+                  <circle cx={codeforcesChart.lastX} cy={codeforcesChart.lastY} r="4" fill="currentColor" />
+                </svg>
+              )}
             </a>
           </div>
         </div>
       </section>
 
-      <section id="projects" className="cardSection">
+      <section id="projects" className="cardSection" data-fade>
         <div className="sectionIntro">
           <p className="sectionLabel">Projects</p>
           <h2>Selected work</h2>
@@ -136,6 +184,13 @@ export default async function HomePage() {
               <p className="projectIndex">{String(index + 1).padStart(2, "0")}</p>
               <h3>{project.title}</h3>
               <p>{project.desc}</p>
+              {project.tags?.length ? (
+                <ul className="chipList projectTags">
+                  {project.tags.map((tag) => (
+                    <li key={tag}>{tag}</li>
+                  ))}
+                </ul>
+              ) : null}
               <a href={project.link} target="_blank" rel="noreferrer">
                 View project
               </a>
@@ -144,7 +199,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section id="contact" className="cardSection">
+      <section id="contact" className="cardSection" data-fade>
         <div className="sectionIntro">
           <p className="sectionLabel">Contact</p>
           <h2>Open to thoughtful projects and conversations.</h2>

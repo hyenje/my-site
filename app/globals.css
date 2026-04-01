@@ -11,6 +11,23 @@
   --shadow: 0 22px 70px rgba(30, 28, 24, 0.08);
 }
 
+/* ─── Scroll fade-in ───────────────────────────────────── */
+[data-fade] {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 0.55s ease, transform 0.55s ease;
+}
+
+[data-fade].is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* staggered delay for grid children */
+[data-fade]:nth-child(2) { transition-delay: 0.08s; }
+[data-fade]:nth-child(3) { transition-delay: 0.16s; }
+[data-fade]:nth-child(4) { transition-delay: 0.24s; }
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -297,6 +314,52 @@ h1 {
 .ratingCard {
   position: relative;
   overflow: hidden;
+  display: flex !important;
+  flex-direction: column;
+  gap: 0 !important;
+  padding: 0 !important;
+}
+
+.ratingCardTop {
+  padding: 14px 16px 10px;
+  display: grid;
+  gap: 4px;
+}
+
+.ratingCardHandle {
+  display: block;
+  font-weight: 700;
+  font-size: 15px;
+}
+
+.ratingCardScore {
+  display: block;
+  font-weight: 700;
+  font-size: 22px;
+  letter-spacing: -0.03em;
+}
+
+.ratingCardScore small {
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+  opacity: 0.7;
+}
+
+.ratingCardLabel {
+  display: block;
+  font-size: 12px !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.1em !important;
+  text-transform: uppercase !important;
+}
+
+.ratingChart {
+  display: block;
+  width: 100%;
+  height: 70px;
+  margin-top: auto;
 }
 
 .ratingCard::before {
@@ -354,6 +417,19 @@ h1 {
 
 .projectCard p {
   color: #4f4a43;
+}
+
+.projectTags {
+  margin-top: 2px;
+}
+
+.projectTags li {
+  padding: 5px 10px !important;
+  font-size: 12px !important;
+  background: var(--accent-soft) !important;
+  border-color: rgba(31, 77, 69, 0.15) !important;
+  color: var(--accent);
+  font-weight: 600;
 }
 
 .projectCard a {
