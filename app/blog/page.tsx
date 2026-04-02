@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { getAllPostsMeta } from "@/lib/blog";
+import { formatDate } from "@/lib/date";
 
 export const metadata = {
   title: "Blog",
@@ -19,7 +20,7 @@ export default function BlogListPage() {
       <section className="blogList">
         {posts.map((post) => (
           <article key={post.slug} className="blogItem">
-            <time dateTime={post.date}>{post.date}</time>
+            <time dateTime={post.date}>{formatDate(post.date)}</time>
             <h2>
               <Link href={`/blog/${post.slug}`}>{post.title}</Link>
             </h2>

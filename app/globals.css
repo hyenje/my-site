@@ -724,6 +724,113 @@ h1 {
   padding-left: 20px;
 }
 
+/* ─── Code blocks ──────────────────────────────────────── */
+.mdxContent pre {
+  background: #1e1e2e;
+  color: #cdd6f4;
+  border-radius: 14px;
+  padding: 18px 20px;
+  overflow-x: auto;
+  font-size: 14px;
+  line-height: 1.65;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.mdxContent pre code {
+  background: none;
+  padding: 0;
+  font-size: inherit;
+  color: inherit;
+  border-radius: 0;
+}
+
+.mdxContent :not(pre) > code {
+  background: rgba(31, 77, 69, 0.08);
+  color: var(--accent);
+  padding: 2px 7px;
+  border-radius: 6px;
+  font-size: 0.88em;
+  font-weight: 500;
+}
+
+/* Syntax token colors (rehype-prism / shiki compatible) */
+.mdxContent pre .comment,
+.mdxContent pre .prolog { color: #6c7086; font-style: italic; }
+.mdxContent pre .keyword,
+.mdxContent pre .tag { color: #cba6f7; }
+.mdxContent pre .function { color: #89b4fa; }
+.mdxContent pre .string,
+.mdxContent pre .attr-value { color: #a6e3a1; }
+.mdxContent pre .number { color: #fab387; }
+.mdxContent pre .operator { color: #89dceb; }
+.mdxContent pre .punctuation { color: #9399b2; }
+.mdxContent pre .class-name,
+.mdxContent pre .builtin { color: #f9e2af; }
+.mdxContent pre .property { color: #89b4fa; }
+.mdxContent pre .attr-name { color: #f9e2af; }
+
+/* ─── Blog post tags ───────────────────────────────────── */
+.postTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.postTags li {
+  list-style: none;
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-size: 13px;
+  background: var(--accent-soft);
+  border: 1px solid rgba(31, 77, 69, 0.15);
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* ─── Post navigation ──────────────────────────────────── */
+.postNav {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-top: 28px;
+}
+
+.postNavItem {
+  display: grid;
+  gap: 4px;
+  text-decoration: none;
+  border-radius: 18px;
+  padding: 16px 18px;
+  background: var(--surface-strong);
+  border: 1px solid var(--line);
+  transition: transform 160ms ease, background 160ms ease;
+}
+
+.postNavItem:hover {
+  transform: translateY(-2px);
+  background: rgba(255, 255, 255, 0.95);
+}
+
+.postNavItem small {
+  color: var(--subtle);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.postNavItem span {
+  font-family: var(--font-space-grotesk), sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+.postNavNext {
+  text-align: right;
+}
+
 @media (max-width: 960px) {
   .heroBody,
   .sectionGrid,

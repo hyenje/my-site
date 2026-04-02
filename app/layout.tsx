@@ -14,7 +14,7 @@ const spaceGrotesk = Space_Grotesk({
 });
 
 export const metadata: Metadata = {
-  title: "Hyeonjae's Site",
+  title: "Competitive Programmer & Developer — Hyeonjae",
   description: "Portfolio, competitive programming, and writing by Hyeonjae",
 };
 

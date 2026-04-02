@@ -9,6 +9,7 @@ import {
   getPostBySlug,
   type BlogFrontmatter,
 } from "@/lib/blog";
+import { formatDate } from "@/lib/date";
 
 type PageProps = {
   params: Promise<{ slug: string }>;
@@ -50,15 +51,44 @@ export default async function BlogPostPage({ params }: PageProps) {
     },
   });
 
+  const allPosts = getAllPostsMeta();
+  const currentIndex = allPosts.findIndex((p) => p.slug === slug);
+  const prevPost = currentIndex < allPosts.length - 1 ? allPosts[currentIndex + 1] : null;
+  const nextPost = currentIndex > 0 ? allPosts[currentIndex - 1] : null;
+
   return (
     <main className="container postContainer">
       <header className="blogHeader">
         <Link href="/blog">Back to blog</Link>
         <h1>{frontmatter.title}</h1>
-        <time dateTime={frontmatter.date}>{frontmatter.date}</time>
+        <time dateTime={frontmatter.date}>{formatDate(frontmatter.date)}</time>
+        {frontmatter.tags?.length ? (
+          <ul className="postTags">
+            {frontmatter.tags.map((tag) => (
+              <li key={tag}>{tag}</li>
+            ))}
+          </ul>
+        ) : null}
       </header>
 
       <article className="mdxContent">{content}</article>
+
+      {(prevPost || nextPost) && (
+        <nav className="postNav">
+          {prevPost ? (
+            <Link href={`/blog/${prevPost.slug}`} className="postNavItem">
+              <small>Previous</small>
+              <span>{prevPost.title}</span>
+            </Link>
+          ) : <div />}
+          {nextPost ? (
+            <Link href={`/blog/${nextPost.slug}`} className="postNavItem postNavNext">
+              <small>Next</small>
+              <span>{nextPost.title}</span>
+            </Link>
+          ) : null}
+        </nav>
+      )}
     </main>
   );
 }
