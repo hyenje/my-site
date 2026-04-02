@@ -15,6 +15,15 @@ export default async function HomePage() {
 
   return (
     <main className="container homePage">
+      <div className="blobWrap" aria-hidden="true">
+        <div className="blob blob1" />
+        <div className="blob blob2" />
+        <div className="blob blob3" />
+        <div className="blob blob4" />
+        <div className="blob blob5" />
+        <div className="blob blob6" />
+      </div>
+
       <header className="hero" data-fade>
         <nav className="topNav">
           <a href="#about">About</a>

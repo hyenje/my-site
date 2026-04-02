@@ -61,6 +61,98 @@ a {
 .homePage {
   display: grid;
   gap: 18px;
+  position: relative;
+}
+
+/* ─── Decorative blobs ─────────────────────────────────── */
+.blobWrap {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.55;
+  will-change: transform;
+  animation: blobFloat 18s ease-in-out infinite alternate;
+}
+
+.blob1 {
+  width: 420px;
+  height: 420px;
+  background: radial-gradient(circle, rgba(201, 236, 228, 0.8), rgba(180, 220, 210, 0.3));
+  top: 120px;
+  left: -120px;
+  animation-duration: 20s;
+}
+
+.blob2 {
+  width: 350px;
+  height: 350px;
+  background: radial-gradient(circle, rgba(220, 210, 245, 0.75), rgba(200, 185, 240, 0.25));
+  top: 60px;
+  right: -80px;
+  animation-delay: -6s;
+  animation-duration: 22s;
+}
+
+.blob3 {
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(240, 225, 200, 0.7), rgba(230, 215, 185, 0.2));
+  top: 620px;
+  right: 10%;
+  animation-delay: -10s;
+  animation-duration: 24s;
+}
+
+.blob4 {
+  width: 380px;
+  height: 380px;
+  background: radial-gradient(circle, rgba(195, 230, 220, 0.65), rgba(175, 215, 205, 0.2));
+  top: 1100px;
+  left: -60px;
+  animation-delay: -3s;
+  animation-duration: 19s;
+}
+
+.blob5 {
+  width: 280px;
+  height: 280px;
+  background: radial-gradient(circle, rgba(225, 215, 250, 0.6), rgba(210, 195, 245, 0.15));
+  top: 1600px;
+  right: -40px;
+  animation-delay: -8s;
+  animation-duration: 21s;
+}
+
+.blob6 {
+  width: 340px;
+  height: 340px;
+  background: radial-gradient(circle, rgba(235, 220, 195, 0.55), rgba(220, 205, 180, 0.15));
+  top: 2100px;
+  left: 5%;
+  animation-delay: -14s;
+  animation-duration: 23s;
+}
+
+@keyframes blobFloat {
+  0% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(30px, -20px) scale(1.05); }
+  66% { transform: translate(-20px, 15px) scale(0.97); }
+  100% { transform: translate(15px, -10px) scale(1.02); }
+}
+
+/* Keep cards above blobs */
+.hero,
+.cardSection {
+  position: relative;
+  z-index: 1;
 }
 
 .hero,
@@ -654,6 +746,12 @@ h1 {
 }
 
 @media (max-width: 640px) {
+  .blob {
+    filter: blur(60px);
+    opacity: 0.35;
+    transform: scale(0.6);
+  }
+
   .container {
     padding: 22px 0 56px;
   }
