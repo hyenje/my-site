@@ -7,7 +7,7 @@ export const portfolio = {
   ratings: {
     atcoder: {
       handle: "hyenje29",
-      rating: 1154,
+      rating: 1108,
       maxRating: 1154,
       url: "https://atcoder.jp/users/hyenje29",
     },
